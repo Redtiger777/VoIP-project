@@ -1,4 +1,4 @@
-package Client;
+package VoIP.Client;
 
 public class Client {
     public Client() {

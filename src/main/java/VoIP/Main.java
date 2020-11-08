@@ -1,7 +1,7 @@
 package VoIP;
 
-import Client.*;
-import Server.*;
+import VoIP.Client.Client;
+import VoIP.Server.Server;
 import java.util.Scanner;
 
 public class Main {

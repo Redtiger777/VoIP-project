@@ -1,4 +1,4 @@
-package Server;
+package VoIP.Server;
 
 public class Server {
     public Server() {
