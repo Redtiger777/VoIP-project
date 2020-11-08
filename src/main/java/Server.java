@@ -1,4 +1,4 @@
-package Server;
+package VoIP;
 
 public class Server {
     public static void main( String[] args ) {
