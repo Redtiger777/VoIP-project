@@ -1,26 +1,29 @@
 package VoIP;
 
 import Client.*;
-import VoIP.*;
-
+import Server.*;
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+        Client client;
+        Server server;
+        String ans;
+        Scanner s;
         boolean done = true;
         while (done) {
             System.out.println("Would you like to start:");
             System.out.println("1. the Server");
             System.out.println("2. the Client");
             System.out.println("3. both");
-            Scanner s = new Scanner(System.in);
-            String ans = s.nextLine();
+            s = new Scanner(System.in);
+            ans = s.nextLine();
             switch (ans) {
-                case "1": Server server = new Server(); done = false; break;
-                case "2": Client client = new Client(); done = false; break;
+                case "1": server = new Server(); done = false; break;
+                case "2": client = new Client(); done = false; break;
                 case "3":
-                Server server = new Server();
-                Client client = new Client();
+                server = new Server();
+                client = new Client();
                 done = false;
                 break;
                 default: System.out.println("Please reply with only 1,2 or 3.");

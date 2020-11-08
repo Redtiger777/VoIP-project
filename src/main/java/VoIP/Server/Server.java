@@ -1,5 +1,7 @@
 package Server;
 
 public class Server {
-    public Server() {   }
+    public Server() {
+        System.out.println("Hello from Server!");
+    }
 }
