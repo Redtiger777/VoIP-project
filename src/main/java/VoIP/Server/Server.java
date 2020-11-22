@@ -1,5 +1,6 @@
 package VoIP.Server;
-import java.net.serverSocket;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.Scanner;
 
 public class Server extends Thread {
@@ -38,8 +39,12 @@ public class Server extends Thread {
 
     private void connections() {
         while (running) {
+        	try {
             Socket s = serverSocket.accept();
             ConnectClient cc = new ConnectClient(s);
+            } catch (Exception e) {
+            	System.out.println("Something went wrong with connecting a client.");
+            }
         }
     }
 
