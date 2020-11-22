@@ -29,7 +29,7 @@ public class Server extends Thread {
             return true;
         } catch (java.net.BindException be) {
             System.out.println("This port is unavailable");
-            System.out.println("Check if any other server is already open on the machine.");
+            System.out.println("Check if any other server is already open on this machine.");
         } catch (Exception e) {
             System.out.println("Could not create the server:" + e);
         }
