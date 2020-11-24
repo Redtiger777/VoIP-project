@@ -21,183 +21,187 @@ public class LoginGUI extends JFrame {
     }
 
     private void initComponents() {
-        // Initialise Components.
-        tabMain = new JTabbedPane();
-        panLogin = new JPanel();
-        panRegister = new JPanel();
-        jTextField1 = new JTextField();
-        jTextField2 = new JTextField();
-        labLogUsername = new JLabel();
-        labLogPassword = new JLabel();
-        butLogin = new JButton();
-        labLogError = new JLabel();
-        labLogHeader = new JLabel();
-        butForgotPassword = new JButton();
-        jTextField3 = new JTextField();
-        jTextField4 = new JTextField();
-        labRegUsername = new JLabel();
-        labRegPassword = new JLabel();
-        butRegister = new JButton();
-        labRegError = new JLabel();
-        labRegHeading = new JLabel();
-        labRegEmail = new JLabel();
-        jTextField5 = new JTextField();
-        labBackground = new JLabel();
+        // Initialise Main Components.
+        labBackground   = new JLabel();
+        tabMain         = new JTabbedPane();
 
-        // Settings of Components
-        tabMain.addTab("Register", panRegister);
+        // Initialise Login Components
+        panLogin        = new JPanel();
+        txfLogUsername  = new JTextField();
+        txfLogPassword  = new JTextField();
+        labLogUsername  = new JLabel();
+        labLogPassword  = new JLabel();
+        butLogin        = new JButton();
+        labLogError     = new JLabel();
+        labLogHeader    = new JLabel();
+        butFrgtPassword = new JButton();
 
-        tabMain.setBounds(190, 160, 410, 270);
+        // Initialise Register Components
+        panRegister     = new JPanel();
+        txfRegUsername  = new JTextField();
+        txfRegPassword  = new JTextField();
+        labRegUsername  = new JLabel();
+        labRegPassword  = new JLabel();
+        butRegister     = new JButton();
+        labRegError     = new JLabel();
+        labRegHeader   = new JLabel();
+        labRegEmail     = new JLabel();
+        txfRegEmail     = new JTextField();
 
-        labBackground.setIcon(new ImageIcon(getClass().getResource("/LoginBG.jpg"))); // NOI18N
-
+        // Settings of Main Components
+        try {
+            labBackground.setIcon(new ImageIcon(getClass().getResource("/LoginBG.jpg")));
+        } catch (Exception e) {
+            labBackground.setIcon(new ImageIcon(getClass().getResource("../Images/LoginBG.jpg")));
+        }
         labBackground.setBounds(0, 0, 800, 600);
 
+        tabMain.addTab("Login", panLogin);
+        tabMain.addTab("Register", panRegister);
+        tabMain.setBounds(190, 160, 410, 270);
         tabMain.setPreferredSize(new Dimension(400, 300));
+        tabMain.setBackground(new Color(255, 255, 255, 200));
 
+        // Settings of Login Components
         panLogin.setPreferredSize(new Dimension(400, 300));
+        panLogin.setBackground(new Color(255, 255, 255, 200));
 
-        labLogUsername.setText("Username");
-
-        labLogPassword.setText("Password");
-
-        butLogin.setText("Login");
-
-        labLogError.setForeground(new Color(255, 0, 0));
-        labLogError.setHorizontalAlignment(SwingConstants.CENTER);
-        labLogError.setText("<Error Message goes here>");
-
-        labLogHeader.setFont(new Font("Yrsa SemiBold", 1, 48)); // NOI18N
+        labLogHeader.setFont(new Font("Yrsa SemiBold", 1, 48));
         labLogHeader.setHorizontalAlignment(SwingConstants.CENTER);
         labLogHeader.setText("Welcome Back");
+        labLogUsername.setText("Username");
+        labLogPassword.setText("Password");
+        labLogError.setForeground(new Color(255, 0, 0)); // RED
+        labLogError.setText("<Error Message goes here>"); //TEMP: To be removed.
+        labLogError.setHorizontalAlignment(SwingConstants.CENTER);
 
-        butForgotPassword.setText("Forgot Password?");
+        butLogin.setText("Login");
+        butFrgtPassword.setText("Forgot Password?");
 
-        panLogin.setBackground(new Color(255, 255, 255, 200));
-        tabMain.addTab("Login", panLogin);
-
+        // Settings of Login Components
         panRegister.setPreferredSize(new Dimension(400, 300));
+        panRegister.setBackground(new Color(255, 255, 255, 200));
 
+        labRegHeader.setFont(new Font("Yrsa SemiBold", 1, 48));
+        labRegHeader.setHorizontalAlignment(SwingConstants.CENTER);
+        labRegHeader.setText("Welcome to VoIP!");
         labRegUsername.setText("Username");
-
+        labRegEmail.setText("Email: ");
         labRegPassword.setText("Password");
-
-        butLogin.setBackground(new Color(255, 255, 255, 200));
-        butRegister.setText("Login");
-
         labRegError.setForeground(new Color(255, 0, 0));
         labRegError.setHorizontalAlignment(SwingConstants.CENTER);
         labRegError.setText("<Error Message goes here>");
 
-        labRegHeading.setFont(new Font("Yrsa SemiBold", 1, 48)); // NOI18N
-        labRegHeading.setHorizontalAlignment(SwingConstants.CENTER);
-        labRegHeading.setText("Welcome to VoIP!");
-
-        labRegEmail.setText("Email: ");
-
-        panLogin.setBackground(new Color(255, 255, 255, 200));
+        butRegister.setText("Register");
 
         // Panel Layouts
-        GroupLayout panLoginLayout = new GroupLayout(panLogin);
-        panLogin.setLayout(panLoginLayout);
-        panLoginLayout.setHorizontalGroup(
-            panLoginLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(panLoginLayout.createSequentialGroup()
+        GroupLayout layLogin = new GroupLayout(panLogin);
+        panLogin.setLayout(layLogin);
+
+        layLogin.setHorizontalGroup(
+            layLogin.createSequentialGroup()
                 .addGap(25, 25, 25)
-                .addGroup(panLoginLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
-                    .addComponent(butForgotPassword)
-                    .addGroup(panLoginLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                        .addComponent(labLogHeader, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(panLoginLayout.createSequentialGroup()
-                            .addComponent(labLogError, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(butLogin, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
-                        .addGroup(panLoginLayout.createSequentialGroup()
-                            .addComponent(labLogPassword)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jTextField2, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE))
-                        .addGroup(panLoginLayout.createSequentialGroup()
-                            .addComponent(labLogUsername)
-                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE))))
-                .addGap(0, 68, Short.MAX_VALUE))
-        );
-        panLoginLayout.setVerticalGroup(
-            panLoginLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(panLoginLayout.createSequentialGroup()
+                .addGroup(layLogin.createParallelGroup()
+                    .addComponent(labLogHeader)
+                    .addGroup(layLogin.createSequentialGroup()
+                        .addComponent(labLogError)
+                        .addComponent(butLogin))
+                    .addGroup(layLogin.createSequentialGroup()
+                        .addComponent(labLogPassword)
+                        .addComponent(txfLogPassword))
+                    .addGroup(layLogin.createSequentialGroup()
+                        .addComponent(labLogUsername)
+                        .addComponent(txfLogUsername))
+                    .addComponent(butFrgtPassword))
                 .addGap(25, 25, 25)
-                .addComponent(labLogHeader, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panLoginLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(labLogUsername)
-                    .addComponent(jTextField1, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addGap(12, 12, 12)
-                .addGroup(panLoginLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labLogPassword))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(butForgotPassword)
-                .addGap(2, 2, 2)
-                .addGroup(panLoginLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(butLogin)
-                    .addComponent(labLogError))
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        GroupLayout panRegisterLayout = new GroupLayout(panRegister);
-        panRegister.setLayout(panRegisterLayout);
-        panRegisterLayout.setHorizontalGroup(
-            panRegisterLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(panRegisterLayout.createSequentialGroup()
+        layLogin.setVerticalGroup(
+            layLogin.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(labLogHeader)
+                .addGroup(layLogin.createParallelGroup()
+                    .addComponent(labLogUsername)
+                    .addComponent(txfLogUsername))
+                .addGroup(layLogin.createParallelGroup()
+                    .addComponent(labLogPassword)
+                    .addComponent(txfLogPassword))
+                .addComponent(butFrgtPassword)
+                .addGroup(layLogin.createParallelGroup()
+                    .addComponent(labLogError)
+                    .addComponent(butLogin))
+                .addGap(25, 25, 25)
+            );
+
+
+        GroupLayout layRegister = new GroupLayout(panRegister);
+        panRegister.setLayout(layRegister);
+        layRegister.setHorizontalGroup(
+            layRegister.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addGroup(layRegister.createParallelGroup()
+                    .addComponent(labRegHeader)
+                    .addGroup(layRegister.createSequentialGroup()
+                        .addComponent(labRegError)
+                        .addComponent(butRegister))
+                    .addGroup(layRegister.createSequentialGroup()
+                        .addComponent(labRegPassword)
+                        .addComponent(txfRegPassword))
+                    .addGroup(layRegister.createSequentialGroup()
+                        .addComponent(labRegUsername)
+                        .addComponent(txfRegUsername))
+                    .addGroup(layRegister.createSequentialGroup()
+                        .addComponent(labRegEmail)
+                        .addComponent(txfRegEmail)))
+                .addGap(25, 25, 25)
+        );
+        layRegister.setHorizontalGroup(
+            layRegister.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(layRegister.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panRegisterLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addGroup(panRegisterLayout.createSequentialGroup()
-                        .addComponent(labRegHeading, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE)
+                .addGroup(layRegister.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addGroup(layRegister.createSequentialGroup()
+                        .addComponent(labRegHeader, GroupLayout.PREFERRED_SIZE, 352, GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(26, Short.MAX_VALUE))
-                    .addGroup(panRegisterLayout.createSequentialGroup()
-                        .addGroup(panRegisterLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                            .addGroup(panRegisterLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
-                                .addGroup(panRegisterLayout.createSequentialGroup()
+                    .addGroup(layRegister.createSequentialGroup()
+                        .addGroup(layRegister.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(layRegister.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                                .addGroup(layRegister.createSequentialGroup()
                                     .addComponent(labRegError, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                     .addComponent(butRegister, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
-                                .addGroup(panRegisterLayout.createSequentialGroup()
+                                .addGroup(layRegister.createSequentialGroup()
                                     .addComponent(labRegUsername)
                                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                    .addComponent(jTextField3, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)))
-                            .addGroup(panRegisterLayout.createSequentialGroup()
+                                    .addComponent(txfRegUsername, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layRegister.createSequentialGroup()
                                 .addComponent(labRegEmail)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField5, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panRegisterLayout.createSequentialGroup()
+                                .addComponent(txfRegEmail, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layRegister.createSequentialGroup()
                                 .addComponent(labRegPassword)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField4, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(txfRegPassword, GroupLayout.PREFERRED_SIZE, 214, GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE))))
         );
-        panRegisterLayout.setVerticalGroup(
-            panRegisterLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(panRegisterLayout.createSequentialGroup()
-                .addGap(18, 18, 18)
-                .addComponent(labRegHeading, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(panRegisterLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        layRegister.setVerticalGroup(
+            layRegister.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(labRegHeader)
+                .addGroup(layRegister.createParallelGroup()
                     .addComponent(labRegUsername)
-                    .addComponent(jTextField3, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panRegisterLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                    .addComponent(jTextField5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(labRegEmail))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panRegisterLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(txfRegUsername))
+                .addGroup(layRegister.createParallelGroup()
                     .addComponent(labRegPassword)
-                    .addComponent(jTextField4, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(panRegisterLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(txfRegPassword))
+                .addGroup(layRegister.createParallelGroup()
+                    .addComponent(labRegEmail)
+                    .addComponent(txfRegEmail))
+                .addGroup(layRegister.createParallelGroup()
                     .addComponent(labRegError)
                     .addComponent(butRegister))
-                .addContainerGap())
-        );
+                .addGap(25, 25, 25)
+            );
 
         // Frame Settings
         getContentPane().add(tabMain);
@@ -216,23 +220,23 @@ public class LoginGUI extends JFrame {
 
     private JButton butLogin;
     private JButton butRegister;
-    private JLabel labBackground;
-    private JLabel labRegEmail;
-    private JButton butForgotPassword;
-    private JLabel labLogUsername;
+    private JButton butFrgtPassword;
     private JLabel labLogPassword;
-    private JLabel labLogError;
-    private JLabel labLogHeader;
-    private JLabel labRegUsername;
     private JLabel labRegPassword;
+    private JLabel labLogUsername;
+    private JLabel labRegUsername;
+    private JLabel labBackground;
+    private JLabel labLogHeader;
+    private JLabel labRegHeader;
+    private JLabel labLogError;
     private JLabel labRegError;
-    private JLabel labRegHeading;
-    private JPanel panLogin;
+    private JLabel labRegEmail;
     private JPanel panRegister;
+    private JPanel panLogin;
+    private JTextField txfLogUsername;
+    private JTextField txfLogPassword;
+    private JTextField txfRegUsername;
+    private JTextField txfRegPassword;
+    private JTextField txfRegEmail;
     private JTabbedPane tabMain;
-    private JTextField jTextField1;
-    private JTextField jTextField2;
-    private JTextField jTextField3;
-    private JTextField jTextField4;
-    private JTextField jTextField5;
 }
