@@ -101,6 +101,11 @@ public class LoginGUI extends JFrame {
     }
 
     public static void main(String args[]) {
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            System.out.println("Something went wrong with look and feel.");
+        }
         new LoginGUI();
     }
 
