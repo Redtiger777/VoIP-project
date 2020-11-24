@@ -1,5 +1,9 @@
+package VoIP.Client;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseAdapter;
 
 public class LoginGUI extends JFrame {
 
@@ -9,11 +13,15 @@ public class LoginGUI extends JFrame {
     }
 
     private void listeners() {
-
+        butLogin.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                System.out.println("Hello World!");
+            }
+        });
     }
 
     private void initComponents() {
-
+        // Initialise Components.
         panBlock = new JPanel();
         txfUsername = new JTextField();
         txfIPAddress = new JTextField();
@@ -24,11 +32,15 @@ public class LoginGUI extends JFrame {
         labHeader = new JLabel("Welcome to VoIP!");
         labBG = new JLabel();
 
+        // Settings of Components
         labError.setText("<Error Message goes here>"); //TEMP
         labError.setForeground(new Color(255, 0, 0));
         labError.setHorizontalAlignment(SwingConstants.CENTER);
-
-        labBG.setIcon(new ImageIcon(getClass().getResource("/LoginBG.jpg")));
+        try {
+            labBG.setIcon(new ImageIcon(getClass().getResource("/LoginBG.jpg")));
+        } catch (Exception e) {
+            labBG.setIcon(new ImageIcon(getClass().getResource("../Images/LoginBG.jpg")));
+        }
 
         labHeader.setHorizontalAlignment(SwingConstants.CENTER);
         labHeader.setFont(new Font("Yrsa SemiBold", 1, 48));
@@ -37,6 +49,7 @@ public class LoginGUI extends JFrame {
         panBlock.setSize(new Dimension(400, 300));
         panBlock.setBackground(new Color(255, 255, 255, 180));
 
+        // Panel layout.
         GroupLayout panLayout = new GroupLayout(panBlock);
         panBlock.setLayout(panLayout);
         panLayout.setHorizontalGroup(
@@ -76,6 +89,7 @@ public class LoginGUI extends JFrame {
             .addGap(40,40,40)
         );
 
+        // Frame Settings
         getContentPane().add(panBlock);
         getContentPane().add(labBG);
         pack();
