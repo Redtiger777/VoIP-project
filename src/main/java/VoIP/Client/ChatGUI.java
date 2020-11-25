@@ -15,8 +15,11 @@ public class ChatGUI extends JFrame {
                         Object o = theList.getModel().getElementAt(index);
                         if (!selectedLstItem.equals(o.toString())) {
                             selectedLstItem = o.toString();
-                            // Only do the action if it has not been selectedLstItem
+                            // Only do the action if it has not been selected
                             System.out.println("Single-clicked on: " + selectedLstItem);
+                            if (theList.getName().equals("ChannelList")) {
+                                changeHeader(selectedLstItem);
+                            }
                         }
                     }
                 } else if (mouseEvent.getClickCount() == 2) {
@@ -63,6 +66,9 @@ public class ChatGUI extends JFrame {
         setMinimumSize(new java.awt.Dimension(800, 600));
 
         modChannel.addElement("Global");
+        lstChannel.setName("ChannelList");
+        lstOnlineUser.setName("");
+
 
         jScrollPane1.setViewportView(lstChannel);
         jScrollPane2.setViewportView(lstOnlineUser);
@@ -117,6 +123,12 @@ public class ChatGUI extends JFrame {
         sendButton.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 sendButtonMouseClicked(evt);
+            }
+        });
+
+        messageField.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                messageFieldKeyPressed(evt);
             }
         });
 
@@ -181,16 +193,28 @@ public class ChatGUI extends JFrame {
         );
 
         pack();
+
+        messageField.requestFocusInWindow();
     }
 
-    private void sendButtonMouseClicked(java.awt.event.MouseEvent evt) {
+    private void sendButtonMouseClicked(MouseEvent evt) {
         System.out.println("The button has been clicked");
         int currIndex = modOnlineUser.getSize() + 1;
         modOnlineUser.addElement("Client " + currIndex);
     }
 
-    public static void addListItem() {
+    private void messageFieldKeyPressed(KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            System.out.println("Messege to be sent: " + messageField.getText());
+        }
+    }
 
+    private void addListItem() {
+
+    }
+
+    private void changeHeader(String newName) {
+        headerLabel.setText(newName);
     }
 
     /**
