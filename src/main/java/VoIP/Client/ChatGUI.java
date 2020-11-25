@@ -19,6 +19,7 @@ public class ChatGUI extends JFrame {
                             System.out.println("Single-clicked on: " + selectedLstItem);
                             if (theList.getName().equals("ChannelList")) {
                                 changeHeader(selectedLstItem);
+                                currChannel = selectedLstItem;
                             }
                         }
                     }
@@ -34,6 +35,8 @@ public class ChatGUI extends JFrame {
 
         initComponents();
         setLocationRelativeTo(null);
+
+
     }
 
     @SuppressWarnings("unchecked")
@@ -204,7 +207,7 @@ public class ChatGUI extends JFrame {
     }
 
     private void messageFieldKeyPressed(KeyEvent evt) {
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && currChannel != "") {
             System.out.println("Messege to be sent: " + messageField.getText());
         }
     }
@@ -261,4 +264,5 @@ public class ChatGUI extends JFrame {
     private JButton sendButton;
     private MouseListener mouseListener;
     private String selectedLstItem = "";
+    private String currChannel = "";
 }
