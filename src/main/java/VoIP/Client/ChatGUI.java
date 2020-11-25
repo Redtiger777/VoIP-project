@@ -3,8 +3,30 @@ import java.awt.event.*;
 import javax.swing.*;
 
 public class ChatGUI extends JFrame {
-    public ChatGUI() {
 
+    // Global variables declaration
+    private JPanel CentrePanel;
+    private JPanel LeftPanel;
+    private JPanel RightPanel;
+    private JTextArea txaChat;
+    private JLabel headerLabel;
+    private JPanel headerPanel;
+    private JScrollPane jScrollPane1;
+    private JScrollPane jScrollPane2;
+    private JScrollPane jScrollPane3;
+    private JTextField messageField;
+    private DefaultListModel<String> modOnlineUser;
+    private DefaultListModel<String> modChannel;
+    private JList<String> lstOnlineUser;
+    private JList<String> lstChannel;
+    private JButton btnSend;
+    private JButton btnCall;
+    private MouseListener mouseListener;
+    private String selectedLstItem = "";
+    private String currChannel = "";
+    private String usrName = "Jannie";
+
+    public ChatGUI() {
         this.mouseListener = new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent mouseEvent) {
@@ -52,9 +74,10 @@ public class ChatGUI extends JFrame {
         lstOnlineUser = new JList<>(modOnlineUser);
         CentrePanel = new JPanel();
         jScrollPane3 = new JScrollPane();
-        chatTextArea = new JTextArea();
+        txaChat = new JTextArea();
         messageField = new JTextField();
-        sendButton = new JButton();
+        btnSend = new JButton();
+        btnCall = new JButton();
         headerPanel = new JPanel();
         headerLabel = new JLabel();
 
@@ -75,14 +98,15 @@ public class ChatGUI extends JFrame {
 
         jScrollPane1.setViewportView(lstChannel);
         jScrollPane2.setViewportView(lstOnlineUser);
-        jScrollPane3.setViewportView(chatTextArea);
+        jScrollPane3.setViewportView(txaChat);
 
-        chatTextArea.setEditable(true);
-        chatTextArea.setColumns(20);
-        chatTextArea.setRows(5);
+        txaChat.setEditable(true);
+        txaChat.setColumns(20);
+        txaChat.setRows(5);
         messageField.setEnabled(true);
         messageField.setEditable(true);
-        sendButton.setText("Send");
+        btnSend.setText("Send");
+        btnCall.setText("Call");
 
         headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
         headerLabel.setText("Channel name");
@@ -123,9 +147,15 @@ public class ChatGUI extends JFrame {
                 .addContainerGap())
         );
 
-        sendButton.addMouseListener(new MouseAdapter() {
+        btnSend.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                sendButtonMouseClicked(evt);
+                btnSendMouseClicked(evt);
+            }
+        });
+
+        btnCall.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                btnCallMouseClicked(evt);
             }
         });
 
@@ -135,19 +165,22 @@ public class ChatGUI extends JFrame {
             }
         });
 
-
-        GroupLayout headerPanelLayout = new GroupLayout(headerPanel);
+        javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
         headerPanelLayout.setHorizontalGroup(
-            headerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(headerLabel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
+                .addComponent(headerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnCall))
         );
-
         headerPanelLayout.setVerticalGroup(
-            headerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
-                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(headerLabel)
+            headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(headerLabel)
+                    .addComponent(btnCall))
                 .addContainerGap())
         );
 
@@ -159,7 +192,7 @@ public class ChatGUI extends JFrame {
             .addGroup(CentrePanelLayout.createSequentialGroup()
                 .addComponent(messageField)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(sendButton))
+                .addComponent(btnSend))
             .addComponent(headerPanel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -173,7 +206,7 @@ public class ChatGUI extends JFrame {
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(CentrePanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(messageField, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(sendButton))
+                    .addComponent(btnSend))
                 .addContainerGap())
         );
 
@@ -200,20 +233,40 @@ public class ChatGUI extends JFrame {
         messageField.requestFocusInWindow();
     }
 
-    private void sendButtonMouseClicked(MouseEvent evt) {
-        System.out.println("The button has been clicked");
-        int currIndex = modOnlineUser.getSize() + 1;
-        modOnlineUser.addElement("Client " + currIndex);
+    private void btnSendMouseClicked(MouseEvent evt) {
+        String message = messageField.getText().trim();
+        if (currChannel != "" && !message.equals("")) {
+            //System.out.println("Messege to be sent: " + messageField.getText());
+            txaChat.append(usrName + ": " + message + "\n");
+            messageField.setText("");
+        }
+        //int currIndex = modOnlineUser.getSize() + 1;
+        //addListItem(modOnlineUser,"Client " + currIndex);
+    }
+
+    private void btnCallMouseClicked(MouseEvent evt) {
+        //JOptionPane.showMessageDialog(this, "This feature is under development");
+        // create a dialog Box
+        JDialog popup = new JDialog(this, "Lol RIP");
+        // create a label
+        JLabel label = new JLabel("This feature is under development");
+        popup.add(label);
+        popup.setSize(250, 100);
+        popup.setVisible(true);
+        popup.setLocationRelativeTo(null);
     }
 
     private void messageFieldKeyPressed(KeyEvent evt) {
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER && currChannel != "") {
-            System.out.println("Messege to be sent: " + messageField.getText());
+        String message = messageField.getText().trim();
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER && currChannel != "" && !message.equals("")) {
+            //System.out.println("Messege to be sent: " + message);
+            txaChat.append(usrName + ": " + message + "\n");
+            messageField.setText("");
         }
     }
 
-    private void addListItem() {
-
+    private void addListItem(DefaultListModel<String> targetLstModel, String text) {
+        targetLstModel.addElement(text);
     }
 
     private void changeHeader(String newName) {
@@ -245,24 +298,4 @@ public class ChatGUI extends JFrame {
             }
         });
     }
-
-    // Global variables declaration
-    private JPanel CentrePanel;
-    private JPanel LeftPanel;
-    private JPanel RightPanel;
-    private JList<String> lstChannel;
-    private JTextArea chatTextArea;
-    private JLabel headerLabel;
-    private JPanel headerPanel;
-    private JScrollPane jScrollPane1;
-    private JScrollPane jScrollPane2;
-    private JScrollPane jScrollPane3;
-    private JTextField messageField;
-    private DefaultListModel<String> modOnlineUser;
-    private DefaultListModel<String> modChannel;
-    private JList<String> lstOnlineUser;
-    private JButton sendButton;
-    private MouseListener mouseListener;
-    private String selectedLstItem = "";
-    private String currChannel = "";
 }
