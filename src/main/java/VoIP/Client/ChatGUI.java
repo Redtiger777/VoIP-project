@@ -5,22 +5,24 @@ import javax.swing.*;
 public class ChatGUI extends JFrame {
 
     // Global variables declaration
-    private JPanel CentrePanel;
-    private JPanel LeftPanel;
-    private JPanel RightPanel;
+    private JPanel pnlCentre;
+    private JPanel pnlLeft;
+    private JPanel pnlRight;
     private JTextArea txaChat;
-    private JLabel headerLabel;
+    private JLabel lblHeader;
+    private JLabel lblChannels;
+    private JLabel lblOnlUsers;
+    private JLabel lblCall;
     private JPanel headerPanel;
     private JScrollPane jScrollPane1;
     private JScrollPane jScrollPane2;
     private JScrollPane jScrollPane3;
-    private JTextField messageField;
+    private JTextField txfMessage;
     private DefaultListModel<String> modOnlineUser;
     private DefaultListModel<String> modChannel;
     private JList<String> lstOnlineUser;
     private JList<String> lstChannel;
     private JButton btnSend;
-    private JButton btnCall;
     private MouseListener mouseListener;
     private String selectedLstItem = "";
     private String currChannel = "";
@@ -42,6 +44,8 @@ public class ChatGUI extends JFrame {
                             if (theList.getName().equals("ChannelList")) {
                                 changeHeader(selectedLstItem);
                                 currChannel = selectedLstItem;
+                                showCentreComp();
+                                txfMessage.requestFocusInWindow();
                             }
                         }
                     }
@@ -62,22 +66,24 @@ public class ChatGUI extends JFrame {
     @SuppressWarnings("unchecked")
     private void initComponents() {
         // Component creation
-        LeftPanel = new JPanel();
+        pnlLeft = new JPanel();
         jScrollPane1 = new JScrollPane();
-        RightPanel = new JPanel();
+        pnlRight = new JPanel();
         jScrollPane2 = new JScrollPane();
         modChannel = new DefaultListModel<>();
         lstChannel = new JList<>(modChannel);
         modOnlineUser = new DefaultListModel<>();
         lstOnlineUser = new JList<>(modOnlineUser);
-        CentrePanel = new JPanel();
+        pnlCentre = new JPanel();
         jScrollPane3 = new JScrollPane();
         txaChat = new JTextArea();
-        messageField = new JTextField();
+        txfMessage = new JTextField();
         btnSend = new JButton();
-        btnCall = new JButton();
         headerPanel = new JPanel();
-        headerLabel = new JLabel();
+        lblHeader = new JLabel();
+        lblChannels = new JLabel();
+        lblOnlUsers = new JLabel();
+        lblCall = new JLabel();
 
         // Action listeners
         lstOnlineUser.addMouseListener(mouseListener);
@@ -86,8 +92,8 @@ public class ChatGUI extends JFrame {
         // Component initialization
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setTitle("Chat screen");
-        setFont(new java.awt.Font("Ubuntu", 0, 10));
-        setMinimumSize(new java.awt.Dimension(800, 600));
+        setFont(new Font("Ubuntu", 0, 10));
+        setMinimumSize(new Dimension(800, 600));
 
         modChannel.addElement("Global");
         lstChannel.setName("ChannelList");
@@ -98,49 +104,60 @@ public class ChatGUI extends JFrame {
         jScrollPane2.setViewportView(lstOnlineUser);
         jScrollPane3.setViewportView(txaChat);
 
-        txaChat.setEditable(true);
+        txaChat.setEditable(false);
         txaChat.setColumns(20);
         txaChat.setRows(5);
-        messageField.setEnabled(true);
-        messageField.setEditable(true);
+        txfMessage.setEnabled(true);
+        txfMessage.setEditable(true);
         btnSend.setText("Send");
-        btnCall.setText("Call");
 
-        headerLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        headerLabel.setText("Channel name");
+        lblHeader.setHorizontalAlignment(SwingConstants.CENTER);
+        lblHeader.setText("Channel name");
 
-        GroupLayout LeftPanelLayout = new GroupLayout(LeftPanel);
-        LeftPanel.setLayout(LeftPanelLayout);
-        LeftPanelLayout.setHorizontalGroup(
-            LeftPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(LeftPanelLayout.createSequentialGroup()
+        lblChannels.setHorizontalAlignment(SwingConstants.CENTER);
+        lblChannels.setText("Channels");
+
+        GroupLayout pnlLeftLayout = new GroupLayout(pnlLeft);
+        pnlLeft.setLayout(pnlLeftLayout);
+        pnlLeftLayout.setHorizontalGroup(
+            pnlLeftLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, pnlLeftLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
+                .addGroup(pnlLeftLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblChannels, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
+        pnlLeftLayout.setVerticalGroup(
+            pnlLeftLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, pnlLeftLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblChannels)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        LeftPanelLayout.setVerticalGroup(
-            LeftPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(LeftPanelLayout.createSequentialGroup()
+        lblOnlUsers.setHorizontalAlignment(SwingConstants.CENTER);
+        lblOnlUsers.setText("Online users");
+
+        GroupLayout pnlRightLayout = new GroupLayout(pnlRight);
+        pnlRight.setLayout(pnlRightLayout);
+        pnlRightLayout.setHorizontalGroup(
+            pnlRightLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(pnlRightLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, GroupLayout.DEFAULT_SIZE, 646, Short.MAX_VALUE)
+                .addGroup(pnlRightLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                    .addComponent(lblOnlUsers, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane2, GroupLayout.PREFERRED_SIZE, 192, GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
-
-        GroupLayout RightPanelLayout = new GroupLayout(RightPanel);
-        RightPanel.setLayout(RightPanelLayout);
-        RightPanelLayout.setHorizontalGroup(
-            RightPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(GroupLayout.Alignment.TRAILING, RightPanelLayout.createSequentialGroup()
+        pnlRightLayout.setVerticalGroup(
+            pnlRightLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(GroupLayout.Alignment.TRAILING, pnlRightLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, GroupLayout.DEFAULT_SIZE, 192, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        RightPanelLayout.setVerticalGroup(
-            RightPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(RightPanelLayout.createSequentialGroup()
-                .addContainerGap()
+                .addComponent(lblOnlUsers)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane2)
                 .addContainerGap())
         );
@@ -151,59 +168,68 @@ public class ChatGUI extends JFrame {
             }
         });
 
-        btnCall.addMouseListener(new MouseAdapter() {
+        lblCall.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 btnCallMouseClicked(evt);
             }
         });
 
-        messageField.addKeyListener(new KeyAdapter() {
+        txfMessage.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) {
-                messageFieldKeyPressed(evt);
+                txfMessageKeyPressed(evt);
             }
         });
 
-        javax.swing.GroupLayout headerPanelLayout = new javax.swing.GroupLayout(headerPanel);
+
+        GroupLayout headerPanelLayout = new GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
         headerPanelLayout.setHorizontalGroup(
-            headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
-                .addComponent(headerLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCall))
+            headerPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(headerPanelLayout.createSequentialGroup()
+                .addComponent(lblHeader, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblCall, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
         );
         headerPanelLayout.setVerticalGroup(
-            headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(headerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(headerLabel)
-                    .addComponent(btnCall))
-                .addContainerGap())
+            headerPanelLayout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+            .addGroup(GroupLayout.Alignment.LEADING, headerPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblCall, GroupLayout.PREFERRED_SIZE, 42, GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(headerPanelLayout.createSequentialGroup()
+                .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblHeader)
+                .addGap(23, 23, 23))
         );
 
-        GroupLayout CentrePanelLayout = new GroupLayout(CentrePanel);
-        CentrePanel.setLayout(CentrePanelLayout);
-        CentrePanelLayout.setHorizontalGroup(
-            CentrePanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+        //lblCall.setIcon(new ImageIcon(getClass().getResource("../Images/callGreenSmall.png")));
+        lblCall.setIcon(new ImageIcon("../Images/callGreenSmall.png"));
+        lblCall.setToolTipText("Call");
+        lblCall.setMaximumSize(new Dimension(40, 40));
+        lblCall.setMinimumSize(new Dimension(40, 40));
+
+        GroupLayout pnlCentreLayout = new GroupLayout(pnlCentre);
+        pnlCentre.setLayout(pnlCentreLayout);
+        pnlCentreLayout.setHorizontalGroup(
+            pnlCentreLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane3, GroupLayout.DEFAULT_SIZE, 356, Short.MAX_VALUE)
-            .addGroup(CentrePanelLayout.createSequentialGroup()
-                .addComponent(messageField)
+            .addGroup(pnlCentreLayout.createSequentialGroup()
+                .addComponent(txfMessage)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSend))
             .addComponent(headerPanel, GroupLayout.Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
-        CentrePanelLayout.setVerticalGroup(
-            CentrePanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(CentrePanelLayout.createSequentialGroup()
+        pnlCentreLayout.setVerticalGroup(
+            pnlCentreLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addGroup(pnlCentreLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(headerPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(CentrePanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(messageField, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlCentreLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(txfMessage, GroupLayout.PREFERRED_SIZE, 58, GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSend))
                 .addContainerGap())
         );
@@ -213,53 +239,46 @@ public class ChatGUI extends JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(LeftPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlLeft, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(CentrePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(pnlCentre, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(RightPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addComponent(pnlRight, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(CentrePanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(LeftPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(RightPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlCentre, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlLeft, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlRight, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
+        hideCentreComp();
 
-        messageField.requestFocusInWindow();
     }
+    private void displayWelcome() {
 
+    }
     private void btnSendMouseClicked(MouseEvent evt) {
-        String message = messageField.getText().trim();
+        String message = txfMessage.getText().trim();
         if (currChannel != "" && !message.equals("")) {
-            //System.out.println("Messege to be sent: " + messageField.getText());
             txaChat.append(usrName + ": " + message + "\n");
-            messageField.setText("");
+            txfMessage.setText("");
         }
-        //int currIndex = modOnlineUser.getSize() + 1;
-        //addListItem(modOnlineUser,"Client " + currIndex);
     }
 
     private void btnCallMouseClicked(MouseEvent evt) {
-        //JOptionPane.showMessageDialog(this, "This feature is under development");
-        // create a dialog Box
-        JDialog popup = new JDialog(this, "Lol RIP");
-        // create a label
-        JLabel label = new JLabel("This feature is under development");
-        popup.add(label);
-        popup.setSize(250, 100);
-        popup.setVisible(true);
-        popup.setLocationRelativeTo(getGUI());
+        if (currChannel != "") {
+            JOptionPane.showMessageDialog(this, "This feature is under development");
+        }
     }
 
-    private void messageFieldKeyPressed(KeyEvent evt) {
-        String message = messageField.getText().trim();
+    private void txfMessageKeyPressed(KeyEvent evt) {
+        String message = txfMessage.getText().trim();
         if (evt.getKeyCode() == KeyEvent.VK_ENTER && currChannel != "" && !message.equals("")) {
             //System.out.println("Messege to be sent: " + message);
             txaChat.append(usrName + ": " + message + "\n");
-            messageField.setText("");
+            txfMessage.setText("");
         }
     }
 
@@ -268,11 +287,27 @@ public class ChatGUI extends JFrame {
     }
 
     private void changeHeader(String newName) {
-        headerLabel.setText(newName);
+        lblHeader.setText(newName);
     }
 
-    public ChatGUI getGUI() {
+    private ChatGUI getGUI() {
         return this;
+    }
+
+    private void hideCentreComp() {
+        txaChat.setVisible(false);
+        txfMessage.setVisible(false);
+        btnSend.setVisible(false);
+        lblHeader.setVisible(false);
+        lblCall.setVisible(false);
+    }
+
+    private void showCentreComp() {
+        txaChat.setVisible(true);
+        txfMessage.setVisible(true);
+        btnSend.setVisible(true);
+        lblHeader.setVisible(true);
+        lblCall.setVisible(true);
     }
 
     /**
@@ -294,7 +329,7 @@ public class ChatGUI extends JFrame {
         }
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
+        EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ChatGUI().setVisible(true);
             }
