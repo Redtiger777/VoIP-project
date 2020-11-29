@@ -57,8 +57,6 @@ public class ChatGUI extends JFrame {
 
         initComponents();
         setLocationRelativeTo(null);
-
-
     }
 
     @SuppressWarnings("unchecked")
@@ -253,7 +251,7 @@ public class ChatGUI extends JFrame {
         popup.add(label);
         popup.setSize(250, 100);
         popup.setVisible(true);
-        popup.setLocationRelativeTo(null);
+        popup.setLocationRelativeTo(getGUI());
     }
 
     private void messageFieldKeyPressed(KeyEvent evt) {
@@ -271,6 +269,10 @@ public class ChatGUI extends JFrame {
 
     private void changeHeader(String newName) {
         headerLabel.setText(newName);
+    }
+
+    public ChatGUI getGUI() {
+        return this;
     }
 
     /**
