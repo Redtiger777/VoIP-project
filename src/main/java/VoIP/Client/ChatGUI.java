@@ -13,6 +13,7 @@ public class ChatGUI extends JFrame {
     private JLabel lblChannels;
     private JLabel lblOnlUsers;
     private JLabel lblCall;
+    private JLabel lblTemp;
     private JPanel headerPanel;
     private JScrollPane jScrollPane1;
     private JScrollPane jScrollPane2;
@@ -27,6 +28,8 @@ public class ChatGUI extends JFrame {
     private String selectedLstItem = "";
     private String currChannel = "";
     private String usrName = "Jannie";
+    private JLayeredPane lpnlCentre;
+    private JPanel pnlWelcome;
 
     public ChatGUI() {
         this.mouseListener = new MouseAdapter() {
@@ -44,7 +47,9 @@ public class ChatGUI extends JFrame {
                             if (theList.getName().equals("ChannelList")) {
                                 changeHeader(selectedLstItem);
                                 currChannel = selectedLstItem;
-                                showCentreComp();
+                                //showCentreComp();
+                                pnlWelcome.setVisible(false);
+                                pnlCentre.setVisible(true);
                                 txfMessage.requestFocusInWindow();
                             }
                         }
@@ -58,7 +63,6 @@ public class ChatGUI extends JFrame {
                 }
             }
         };
-
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -84,6 +88,9 @@ public class ChatGUI extends JFrame {
         lblChannels = new JLabel();
         lblOnlUsers = new JLabel();
         lblCall = new JLabel();
+        lpnlCentre = new JLayeredPane();
+        pnlWelcome = new JPanel();
+        lblTemp = new JLabel();
 
         // Action listeners
         lstOnlineUser.addMouseListener(mouseListener);
@@ -180,7 +187,6 @@ public class ChatGUI extends JFrame {
             }
         });
 
-
         GroupLayout headerPanelLayout = new GroupLayout(headerPanel);
         headerPanel.setLayout(headerPanelLayout);
         headerPanelLayout.setHorizontalGroup(
@@ -234,7 +240,53 @@ public class ChatGUI extends JFrame {
                 .addContainerGap())
         );
 
-        GroupLayout layout = new GroupLayout(getContentPane());
+        lblTemp.setIcon(new javax.swing.ImageIcon("/home/shaun/Downloads/Screenshot from 2020-11-29 19-22-43.png")); // NOI18N
+
+        javax.swing.GroupLayout pnlWelcomeLayout = new javax.swing.GroupLayout(pnlWelcome);
+        pnlWelcome.setLayout(pnlWelcomeLayout);
+        pnlWelcomeLayout.setHorizontalGroup(
+            pnlWelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlWelcomeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 380, Short.MAX_VALUE))
+        );
+        pnlWelcomeLayout.setVerticalGroup(
+            pnlWelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pnlWelcomeLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblTemp, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        lpnlCentre.setLayer(pnlWelcome, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpnlCentre.setLayer(pnlCentre, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        javax.swing.GroupLayout lpnlCentreLayout = new javax.swing.GroupLayout(lpnlCentre);
+        lpnlCentre.setLayout(lpnlCentreLayout);
+        lpnlCentreLayout.setHorizontalGroup(
+            lpnlCentreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 392, Short.MAX_VALUE)
+            .addGroup(lpnlCentreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpnlCentreLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(pnlCentre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(lpnlCentreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(pnlWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        lpnlCentreLayout.setVerticalGroup(
+            lpnlCentreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(lpnlCentreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(lpnlCentreLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addComponent(pnlCentre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addContainerGap()))
+            .addGroup(lpnlCentreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addComponent(pnlWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        /*GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(GroupLayout.Alignment.LEADING)
@@ -250,15 +302,31 @@ public class ChatGUI extends JFrame {
             .addComponent(pnlCentre, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlLeft, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(pnlRight, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );*/
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(pnlLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lpnlCentre)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(lpnlCentre)
         );
 
         pack();
-        hideCentreComp();
-
+        //hideCentreComp();
+        pnlCentre.setVisible(false);
     }
-    private void displayWelcome() {
 
-    }
     private void btnSendMouseClicked(MouseEvent evt) {
         String message = txfMessage.getText().trim();
         if (currChannel != "" && !message.equals("")) {
