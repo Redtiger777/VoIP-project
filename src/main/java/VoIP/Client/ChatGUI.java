@@ -208,7 +208,6 @@ public class ChatGUI extends JFrame {
                 .addGap(23, 23, 23))
         );
 
-        //lblCall.setIcon(new ImageIcon(getClass().getResource("../Images/callGreenSmall.png")));
         lblCall.setIcon(new ImageIcon("../Images/callGreenSmall.png"));
         lblCall.setToolTipText("Call");
         lblCall.setMaximumSize(new Dimension(40, 40));
@@ -240,7 +239,7 @@ public class ChatGUI extends JFrame {
                 .addContainerGap())
         );
 
-        lblTemp.setIcon(new javax.swing.ImageIcon("/home/shaun/Downloads/Screenshot from 2020-11-29 19-22-43.png")); // NOI18N
+        lblTemp.setIcon(new javax.swing.ImageIcon("../Images/temp.png")); 
 
         javax.swing.GroupLayout pnlWelcomeLayout = new javax.swing.GroupLayout(pnlWelcome);
         pnlWelcome.setLayout(pnlWelcomeLayout);
@@ -286,24 +285,6 @@ public class ChatGUI extends JFrame {
                 .addComponent(pnlWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        /*GroupLayout layout = new GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlLeft, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlCentre, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlRight, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
-            .addComponent(pnlCentre, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlLeft, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlRight, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );*/
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -344,7 +325,6 @@ public class ChatGUI extends JFrame {
     private void txfMessageKeyPressed(KeyEvent evt) {
         String message = txfMessage.getText().trim();
         if (evt.getKeyCode() == KeyEvent.VK_ENTER && currChannel != "" && !message.equals("")) {
-            //System.out.println("Messege to be sent: " + message);
             txaChat.append(usrName + ": " + message + "\n");
             txfMessage.setText("");
         }
@@ -360,22 +340,6 @@ public class ChatGUI extends JFrame {
 
     private ChatGUI getGUI() {
         return this;
-    }
-
-    private void hideCentreComp() {
-        txaChat.setVisible(false);
-        txfMessage.setVisible(false);
-        btnSend.setVisible(false);
-        lblHeader.setVisible(false);
-        lblCall.setVisible(false);
-    }
-
-    private void showCentreComp() {
-        txaChat.setVisible(true);
-        txfMessage.setVisible(true);
-        btnSend.setVisible(true);
-        lblHeader.setVisible(true);
-        lblCall.setVisible(true);
     }
 
     /**
