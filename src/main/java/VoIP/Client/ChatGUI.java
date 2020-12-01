@@ -308,7 +308,7 @@ public class ChatGUI extends JFrame {
         pack();
         setVisible(true);
 
-        messageField.requestFocusInWindow();
+        txfMessage.requestFocusInWindow();
         pnlCentre.setVisible(false);
     }
 
