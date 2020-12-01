@@ -28,7 +28,7 @@ public class Main {
                 done = false;
                 break;
                 case "4": done = false; break;
-                default: System.out.println("Please reply with only 1,2 or 3.");
+                default: System.out.println("Please reply with only 1,2,3 or 4.");
 
             }
         }
