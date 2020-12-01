@@ -1,3 +1,5 @@
+package VoIP.Client;
+
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
@@ -227,6 +229,7 @@ public class ChatGUI extends JFrame {
         );
 
         pack();
+        setVisible(true);
 
         messageField.requestFocusInWindow();
     }
@@ -296,7 +299,7 @@ public class ChatGUI extends JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ChatGUI().setVisible(true);
+                new ChatGUI();
             }
         });
     }
