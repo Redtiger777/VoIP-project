@@ -16,7 +16,7 @@ public class MongoDB {
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);
 
-        String connectionString = "mongodb+srv://Shaun_admin:9jBVX4BBtOly51v5@voip-cluster.y7f8o.mongodb.net/Test_DB";
+        String connectionString = "";
         try (MongoClient mongoClient = MongoClients.create(connectionString)) {
             // Make connection to the databse
             MongoDatabase testDB = mongoClient.getDatabase("Test_DB");
