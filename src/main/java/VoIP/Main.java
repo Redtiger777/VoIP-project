@@ -16,6 +16,7 @@ public class Main {
             System.out.println("1. the Server");
             System.out.println("2. the Client");
             System.out.println("3. both");
+            System.out.println("4. quit");
             s = new Scanner(System.in);
             ans = s.nextLine();
             switch (ans) {
@@ -26,7 +27,8 @@ public class Main {
                 client = new Client();
                 done = false;
                 break;
-                default: System.out.println("Please reply with only 1,2 or 3.");
+                case "4": done = false; break;
+                default: System.out.println("Please reply with only 1,2,3 or 4.");
 
             }
         }
