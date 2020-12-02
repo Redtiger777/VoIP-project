@@ -210,7 +210,12 @@ public class ChatGUI extends JFrame {
                 .addGap(23, 23, 23))
         );
 
-        lblCall.setIcon(new ImageIcon("../Images/callGreenSmall.png"));
+        try {
+            lblCall.setIcon(new ImageIcon(getClass().getResource("/callGreenSmall.png")));
+        } catch (Exception e) {
+            lblCall.setIcon(new ImageIcon(("../Images/callGreenSmall.png")));
+        }
+
         lblCall.setToolTipText("Call");
         lblCall.setMaximumSize(new Dimension(40, 40));
         lblCall.setMinimumSize(new Dimension(40, 40));
@@ -241,67 +246,74 @@ public class ChatGUI extends JFrame {
                 .addContainerGap())
         );
 
-        lblTemp.setIcon(new javax.swing.ImageIcon("../Images/temp.png"));
+        try {
+            lblTemp.setIcon(new ImageIcon(getClass().getResource("/temp.png")));
+        } catch (Exception e) {
+            lblTemp.setIcon(new ImageIcon(("../Images/temp.png")));
+        }
 
-        javax.swing.GroupLayout pnlWelcomeLayout = new javax.swing.GroupLayout(pnlWelcome);
+        lblTemp.setHorizontalAlignment(JLabel.CENTER);
+        lblTemp.setVerticalAlignment(JLabel.CENTER);
+
+        GroupLayout pnlWelcomeLayout = new GroupLayout(pnlWelcome);
         pnlWelcome.setLayout(pnlWelcomeLayout);
         pnlWelcomeLayout.setHorizontalGroup(
-            pnlWelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            pnlWelcomeLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(pnlWelcomeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTemp, javax.swing.GroupLayout.PREFERRED_SIZE, 380, Short.MAX_VALUE))
+                .addComponent(lblTemp, GroupLayout.PREFERRED_SIZE, 380, Short.MAX_VALUE))
         );
         pnlWelcomeLayout.setVerticalGroup(
-            pnlWelcomeLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            pnlWelcomeLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(pnlWelcomeLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblTemp, javax.swing.GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
+                .addComponent(lblTemp, GroupLayout.DEFAULT_SIZE, 570, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        lpnlCentre.setLayer(pnlWelcome, javax.swing.JLayeredPane.DEFAULT_LAYER);
-        lpnlCentre.setLayer(pnlCentre, javax.swing.JLayeredPane.DEFAULT_LAYER);
+        lpnlCentre.setLayer(pnlWelcome, JLayeredPane.DEFAULT_LAYER);
+        lpnlCentre.setLayer(pnlCentre, JLayeredPane.DEFAULT_LAYER);
 
-        javax.swing.GroupLayout lpnlCentreLayout = new javax.swing.GroupLayout(lpnlCentre);
+        GroupLayout lpnlCentreLayout = new GroupLayout(lpnlCentre);
         lpnlCentre.setLayout(lpnlCentreLayout);
         lpnlCentreLayout.setHorizontalGroup(
-            lpnlCentreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            lpnlCentreLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGap(0, 392, Short.MAX_VALUE)
-            .addGroup(lpnlCentreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lpnlCentreLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(lpnlCentreLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(pnlCentre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlCentre, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
-            .addGroup(lpnlCentreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(pnlWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(lpnlCentreLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(pnlWelcome, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         lpnlCentreLayout.setVerticalGroup(
-            lpnlCentreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            lpnlCentreLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGap(0, 0, Short.MAX_VALUE)
-            .addGroup(lpnlCentreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(lpnlCentreLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                 .addGroup(lpnlCentreLayout.createSequentialGroup()
                     .addContainerGap()
-                    .addComponent(pnlCentre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlCentre, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addContainerGap()))
-            .addGroup(lpnlCentreLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addComponent(pnlWelcome, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(lpnlCentreLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addComponent(pnlWelcome, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        GroupLayout layout = new GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(pnlLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlLeft, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lpnlCentre)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(pnlRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlRight, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(pnlLeft, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(pnlRight, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+            .addComponent(pnlLeft, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(pnlRight, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(lpnlCentre)
         );
 
