@@ -1,4 +1,5 @@
 package VoIP.Server;
+
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
@@ -57,6 +58,10 @@ public class Server extends Thread {
                 serverSocket.close();
             }
         } catch (Exception e) { }
+    }
+
+    public static void main(String[] args) {
+        new Server();
     }
 
     class Quit extends Thread {
