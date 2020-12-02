@@ -1,1 +1,1 @@
-web: mvn compile exec:java -Dexec.mainClass="VoIP.Server.Server"
+web: java -jar target/VoIP-1.jar 

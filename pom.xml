@@ -5,8 +5,7 @@
     <groupId>VoIP</groupId>
     <artifactId>VoIP</artifactId>
     <packaging>jar</packaging>
-    <version>1.0-SNAPSHOT</version>
-
+    <version>1</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -30,5 +29,22 @@
             <version>${mongodb-driver-sync.version}</version>
         </dependency>
     </dependencies>
-
+    <build>
+        <plugins>
+            <plugin>
+                <!-- Building an executable jar -->
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.1.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <!-- give full qualified name of your main class-->
+                            <mainClass>VoIP.Main</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
