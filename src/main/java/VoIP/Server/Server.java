@@ -2,6 +2,7 @@ package VoIP.Server;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import java.net.SocketTimeoutException;
 
 public class Server extends Thread {
     boolean running;
@@ -26,6 +27,7 @@ public class Server extends Thread {
     private boolean createServer() {
         try {
             serverSocket = new ServerSocket(60010);
+            serverSocket.setSoTimeout(1000);
             System.out.println("The server is created.");
             return true;
         } catch (java.net.BindException be) {
@@ -42,6 +44,7 @@ public class Server extends Thread {
         	try {
             Socket s = serverSocket.accept();
             ConnectClient cc = new ConnectClient(s);
+            } catch (SocketTimeoutException ste) {
             } catch (Exception e) {
             	System.out.println("Something went wrong with connecting a client.");
             }
