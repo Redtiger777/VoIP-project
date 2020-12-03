@@ -4,7 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
+import java.security.MessageDigest;
 
+import VoIP.Database.MongoDB;
+import VoIP.Misc.PrintOut;
 public class LoginGUI extends JFrame {
 
     public LoginGUI() {
@@ -20,37 +23,62 @@ public class LoginGUI extends JFrame {
         butLogin.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 // TODO: Check if credialtials are there.
-                try {
-                /* Applies the system look and feel */
-                UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
-                } catch (UnsupportedLookAndFeelException e) {
-                   System.out.println("System look and feel unsupported.\n" + e);
-                } catch (ClassNotFoundException e) {
-                   System.out.println("System look and feel class could not be found.\n" + e);
-                } catch (InstantiationException e) {
-                   System.out.println("System look and feel could not be initialized.\n" + e);
-                } catch (IllegalAccessException e) {
-                   System.out.println("Illegal Access Exception.\n" + e);
-                }
+                String givenUsername = txfLogUsername.getText();
+                if (!givenUsername.trim().equals("")) {
+                    if (MongoDB.checkLoginCred(givenUsername.trim(), "encrypted password goes here")) {
+                        PrintOut.printInfo("Correct Username!");
+                        try {
+                            /* Applies the system look and feel */
+                            UIManager.setLookAndFeel(
+                            UIManager.getSystemLookAndFeelClassName());
+                        } catch (UnsupportedLookAndFeelException e) {
+                            System.out.println("System look and feel unsupported.\n" + e);
+                        } catch (ClassNotFoundException e) {
+                            System.out.println("System look and feel class could not be found.\n" + e);
+                        } catch (InstantiationException e) {
+                            System.out.println("System look and feel could not be initialized.\n" + e);
+                        } catch (IllegalAccessException e) {
+                            System.out.println("Illegal Access Exception.\n" + e);
+                        }
 
-                /* Create and display the form */
-                java.awt.EventQueue.invokeLater(new Runnable() {
-                    public void run() {
-                        new ChatGUI();
-                        getGUI().dispose();
+                        /* Create and display the form */
+                        java.awt.EventQueue.invokeLater(new Runnable() {
+                            public void run() {
+                                new ChatGUI();
+                                getGUI().dispose();
+                            }
+                        });
+                    } else {
+                        labLogError.setText("Incorrect Username!");
+                        repaint();
                     }
-                });
+                } else {
+                    labLogError.setText("Username cannot be empty!");
+                    repaint();
+                }
             }
         });
 
         butRegister.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 // TODO: Check if info is filled in correctly
+
                 new ChatGUI();
                 getGUI().dispose();
             }
         });
+    }
+
+    private static String encodeString(String text) {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            messageDigest.update(text.getBytes());
+            String hashedString = new String(messageDigest.digest());
+            return hashedString;
+        } catch(Exception e) {
+            System.out.println(e);
+            return null;
+        }
     }
 
     private void initComponents() {
@@ -106,7 +134,6 @@ public class LoginGUI extends JFrame {
         labLogUsername.setText("Username: ");
         labLogPassword.setText("Password: ");
         labLogError.setForeground(new Color(255, 0, 0)); // RED
-        labLogError.setText("<Error Message goes here>"); //TEMP: To be removed.
         labLogError.setHorizontalAlignment(SwingConstants.CENTER);
 
         butLogin.setText("Login");
@@ -124,7 +151,6 @@ public class LoginGUI extends JFrame {
         labRegPassword.setText("Password: ");
         labRegError.setForeground(new Color(255, 0, 0));
         labRegError.setHorizontalAlignment(SwingConstants.CENTER);
-        labRegError.setText("<Error Message goes here>");
 
         butRegister.setText("Register");
 
