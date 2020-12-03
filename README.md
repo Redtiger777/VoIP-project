@@ -1,3 +1,5 @@
+![CodeQL](https://github.com/Redtiger777/VoIP-project/workflows/CodeQL/badge.svg?style=svg)
+![Java CI with Maven](https://github.com/Redtiger777/VoIP-project/workflows/Java%20CI%20with%20Maven/badge.svg?branch=main)
 # VoIP-project
 Here we code a VoIP project. It should contain private and public messaging and calls (video is optional).\
 Flow of the program:
