@@ -16,7 +16,7 @@ import VoIP.Misc.PrintOut;
 public class MongoDB {
     // NOTE: Never Commit with a visible uri!!!!
         private static final String CONNECT_URI =
-    "mongodb+srv://admin:0kAUprVNKpKQCiuq@voip-cluster.y7f8o.mongodb.net/DB";
+    "";
 
     public static void main(String[] args) {
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
