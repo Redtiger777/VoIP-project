@@ -31,7 +31,7 @@ public class PrintOut {
         System.out.println(errorFormat + ANSI_BOLD + line + ANSI_RESET);
         System.out.println(errorFormat + ANSI_RED + ANSI_BOLD + message + ANSI_RESET);
         System.out.println(errorFormat + ANSI_BOLD + line + ANSI_RESET);
-        System.exit(1);
+        //System.exit(1);
     }
 
     /**
