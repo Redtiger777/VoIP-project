@@ -2,12 +2,17 @@ package VoIP.Client;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseAdapter;
+import java.awt.event.*;
 import java.security.MessageDigest;
 
 import VoIP.Database.MongoDB;
 import VoIP.Misc.PrintOut;
+import java.util.Arrays;
+import java.nio.charset.Charset;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.math.BigInteger;
+
 public class LoginGUI extends JFrame {
 
     public LoginGUI() {
@@ -22,58 +27,81 @@ public class LoginGUI extends JFrame {
     private void listeners() {
         butLogin.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                // TODO: Check if credialtials are there.
-                String givenUsername = txfLogUsername.getText();
-                if (!givenUsername.trim().equals("")) {
-                    if (MongoDB.checkLoginCred(givenUsername.trim(), "encrypted password goes here")) {
-                        PrintOut.printInfo("Correct Username!");
-                        try {
-                            /* Applies the system look and feel */
-                            UIManager.setLookAndFeel(
-                            UIManager.getSystemLookAndFeelClassName());
-                        } catch (UnsupportedLookAndFeelException e) {
-                            System.out.println("System look and feel unsupported.\n" + e);
-                        } catch (ClassNotFoundException e) {
-                            System.out.println("System look and feel class could not be found.\n" + e);
-                        } catch (InstantiationException e) {
-                            System.out.println("System look and feel could not be initialized.\n" + e);
-                        } catch (IllegalAccessException e) {
-                            System.out.println("Illegal Access Exception.\n" + e);
-                        }
-
-                        /* Create and display the form */
-                        java.awt.EventQueue.invokeLater(new Runnable() {
-                            public void run() {
-                                new ChatGUI();
-                                getGUI().dispose();
-                            }
-                        });
-                    } else {
-                        labLogError.setText("Incorrect Username!");
-                        repaint();
-                    }
-                } else {
-                    labLogError.setText("Username cannot be empty!");
-                    repaint();
-                }
+                logIn();
             }
         });
 
         butRegister.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 // TODO: Check if info is filled in correctly
-
                 new ChatGUI();
                 getGUI().dispose();
             }
         });
+
+        txfLogUsername.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                txfLoginKeyPressed(evt);
+            }
+        });
+
+        txfLogPassword.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                txfLoginKeyPressed(evt);
+            }
+        });
     }
 
-    private static String encodeString(String text) {
+    private void logIn() {
+        String givenUsername = txfLogUsername.getText();
+        
+        if (!givenUsername.trim().equals("") && txfLogPassword.getPassword().length != 0) {
+            byte[] passBytes = toBytes(txfLogPassword.getPassword());
+            String encryptedPass = encodeBytes(passBytes);
+            Arrays.fill(passBytes, (byte) 0); // clear sensitive data
+
+            if (MongoDB.checkLoginCred(givenUsername.trim(), encryptedPass)) {
+                try {
+                    UIManager.setLookAndFeel(
+                    UIManager.getSystemLookAndFeelClassName());
+                } catch (UnsupportedLookAndFeelException e) {
+                    System.out.println("System look and feel unsupported.\n" + e);
+                } catch (ClassNotFoundException e) {
+                    System.out.println("System look and feel class could not be found.\n" + e);
+                } catch (InstantiationException e) {
+                    System.out.println("System look and feel could not be initialized.\n" + e);
+                } catch (IllegalAccessException e) {
+                    System.out.println("Illegal Access Exception.\n" + e);
+                }
+
+                new ChatGUI();
+                getGUI().dispose();
+
+            } else {
+                labLogError.setText("Incorrect Username or Password!");
+                repaint();
+            }
+        } else {
+            labLogError.setText("Empty username or password!");
+            repaint();
+        }
+    }
+
+    private void register() {
+
+    }
+
+    private void txfLoginKeyPressed(KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            logIn();
+        }
+    }
+
+    private static String encodeBytes(byte[] text) {
         try {
             MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-            messageDigest.update(text.getBytes());
-            String hashedString = new String(messageDigest.digest());
+            messageDigest.update(text);
+            String hashedString = new BigInteger(1, messageDigest.digest()).toString(16);
             return hashedString;
         } catch(Exception e) {
             System.out.println(e);
@@ -81,6 +109,16 @@ public class LoginGUI extends JFrame {
         }
     }
 
+    private byte[] toBytes(char[] chars) {
+        CharBuffer charBuffer = CharBuffer.wrap(chars);
+        ByteBuffer byteBuffer = Charset.forName("UTF-8").encode(charBuffer);
+        byte[] bytes = Arrays.copyOfRange(byteBuffer.array(),
+                byteBuffer.position(), byteBuffer.limit());
+        Arrays.fill(charBuffer.array(), '\u0000'); // clear sensitive data
+        Arrays.fill(byteBuffer.array(), (byte) 0); // clear sensitive data
+
+    return bytes;
+}
     private void initComponents() {
         // Initialise Main Components.
         UIManager.put("TabbedPane.contentOpaque", false);
@@ -90,7 +128,7 @@ public class LoginGUI extends JFrame {
         // Initialise Login Components
         panLogin        = new JPanel();
         txfLogUsername  = new JTextField();
-        txfLogPassword  = new JTextField();
+        txfLogPassword  = new JPasswordField();
         labLogUsername  = new JLabel();
         labLogPassword  = new JLabel();
         butLogin        = new JButton();
@@ -301,7 +339,7 @@ public class LoginGUI extends JFrame {
     private JPanel panRegister;
     private JPanel panLogin;
     private JTextField txfLogUsername;
-    private JTextField txfLogPassword;
+    private JPasswordField txfLogPassword;
     private JTextField txfRegUsername;
     private JTextField txfRegPassword;
     private JTextField txfRegEmail;

@@ -21,24 +21,34 @@ public class MongoDB {
     public static void main(String[] args) {
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);
-
-        try (MongoClient mongoClient = MongoClients.create(CONNECT_URI)) {
-            PrintOut.printInfo("Database connection success!");
-        } catch (Exception e){
-            PrintOut.printError("Database connection failed!");
+        if (CONNECT_URI.equals("")) {
+            PrintOut.printError("Empty URI string!");
+        } else {
+            try (MongoClient mongoClient = MongoClients.create(CONNECT_URI)) {
+                PrintOut.printInfo("Database connection success!");
+            } catch (Exception e){
+                PrintOut.printError("Database connection failed!");
+            }
         }
     }
 
     public static boolean checkLoginCred(String givenUser, String givenPass) {
         boolean correctPass = false;
         boolean correctUser = false;
-        Document queryUser = getUser(givenUser);
-        if (queryUser != null) {
-            if (queryUser.get("username").equals(givenUser)) {
-                correctUser = true;
+        if (CONNECT_URI.equals("")) {
+            PrintOut.printError("Empty URI string!");
+        } else {
+            Document queryUser = getUser(givenUser);
+            if (queryUser != null) {
+                if (queryUser.get("username").equals(givenUser)) {
+                    correctUser = true;
+                }
+                if (queryUser.get("password").equals(givenPass)) {
+                    correctPass = true;
+                }
             }
         }
-        return correctUser;
+        return (correctUser && correctPass);
     }
     private static Document getUser(String username) {
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
