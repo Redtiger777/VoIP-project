@@ -34,27 +34,50 @@ public class LoginGUI extends JFrame {
         butRegister.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
                 // TODO: Check if info is filled in correctly
-                new ChatGUI();
-                getGUI().dispose();
+                register();
             }
         });
 
         txfLogUsername.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) {
-                txfLoginKeyPressed(evt);
+                loginKeyPressed(evt);
             }
         });
 
         txfLogPassword.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) {
-                txfLoginKeyPressed(evt);
+                loginKeyPressed(evt);
+            }
+        });
+
+        txfRegUsername.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                registerKeyPressed(evt);
+            }
+        });
+
+        txfRegPassword.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                registerKeyPressed(evt);
+            }
+        });
+
+        txfRegEmail.addKeyListener(new KeyAdapter() {
+            public void keyPressed(KeyEvent evt) {
+                registerKeyPressed(evt);
+            }
+        });
+
+        butFrgtPassword.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                forgotPassword();
             }
         });
     }
 
     private void logIn() {
         String givenUsername = txfLogUsername.getText();
-        
+
         if (!givenUsername.trim().equals("") && txfLogPassword.getPassword().length != 0) {
             byte[] passBytes = toBytes(txfLogPassword.getPassword());
             String encryptedPass = encodeBytes(passBytes);
@@ -88,12 +111,39 @@ public class LoginGUI extends JFrame {
     }
 
     private void register() {
+        String givenUsername = txfRegUsername.getText();
+        String givenEmail = txfRegEmail.getText();
 
+        if (!givenUsername.trim().equals("") && txfRegPassword.getPassword().length != 0) {
+            byte[] passBytes = toBytes(txfRegPassword.getPassword());
+            String encryptedPass = encodeBytes(passBytes);
+            Arrays.fill(passBytes, (byte) 0); // clear sensitive data
+
+            if (MongoDB.registerUser(givenUsername.trim(), encryptedPass, givenEmail)) {
+                txfRegUsername.setText("");
+                txfRegPassword.setText("");
+                txfRegEmail.setText("");
+                repaint();
+            }
+        } else {
+            labRegError.setText("Empty username or password!");
+            repaint();
+        }
     }
 
-    private void txfLoginKeyPressed(KeyEvent evt) {
+    private void forgotPassword() {
+        JOptionPane.showMessageDialog(this, "LOL! RIP bro");
+    }
+
+    private void loginKeyPressed(KeyEvent evt) {
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             logIn();
+        }
+    }
+
+    private void registerKeyPressed(KeyEvent evt) {
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            register();
         }
     }
 
@@ -139,7 +189,7 @@ public class LoginGUI extends JFrame {
         // Initialise Register Components
         panRegister     = new JPanel();
         txfRegUsername  = new JTextField();
-        txfRegPassword  = new JTextField();
+        txfRegPassword  = new JPasswordField();
         labRegUsername  = new JLabel();
         labRegPassword  = new JLabel();
         butRegister     = new JButton();
@@ -341,7 +391,7 @@ public class LoginGUI extends JFrame {
     private JTextField txfLogUsername;
     private JPasswordField txfLogPassword;
     private JTextField txfRegUsername;
-    private JTextField txfRegPassword;
+    private JPasswordField txfRegPassword;
     private JTextField txfRegEmail;
     private JTabbedPane tabMain;
 }

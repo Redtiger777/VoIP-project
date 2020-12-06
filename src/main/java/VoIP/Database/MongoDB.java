@@ -13,6 +13,8 @@ import java.util.logging.Level;
 // PrintOut class import
 import VoIP.Misc.PrintOut;
 
+import javax.swing.JOptionPane;
+
 public class MongoDB {
     // NOTE: Never Commit with a visible uri!!!!
         private static final String CONNECT_URI =
@@ -35,10 +37,11 @@ public class MongoDB {
     public static boolean checkLoginCred(String givenUser, String givenPass) {
         boolean correctPass = false;
         boolean correctUser = false;
+
         if (CONNECT_URI.equals("")) {
             PrintOut.printError("Empty URI string!");
         } else {
-            Document queryUser = getUser(givenUser);
+            Document queryUser = getEntry("username", givenUser);
             if (queryUser != null) {
                 if (queryUser.get("username").equals(givenUser)) {
                     correctUser = true;
@@ -50,7 +53,41 @@ public class MongoDB {
         }
         return (correctUser && correctPass);
     }
-    private static Document getUser(String username) {
+
+    public static boolean registerUser(String givenUser, String givenPass, String givenEmail) {
+        boolean userExists = false;
+        boolean emailExists = false;
+        Document queryUser = getEntry("username", givenUser);
+        Document queryEmail = getEntry("email", givenEmail);
+
+        if (queryUser != null) {
+            if (queryUser.get("username").equals(givenUser)) {
+                userExists = true;
+            }
+        }
+
+        if (queryEmail != null) {
+            if (queryEmail.get("email").equals(givenEmail)) {
+                emailExists = true;
+            }
+        }
+
+        if (userExists || emailExists) {
+            // The details are already in use
+            JOptionPane.showMessageDialog(null, "Details already in use.");
+        } else {
+            // Do the registration
+            if (newEntry(givenUser, givenPass, givenEmail)) {
+                JOptionPane.showMessageDialog(null, "Registration success! Please Login.");
+            } else {
+                JOptionPane.showMessageDialog(null, "Registration failure! Please contact one of our system admins.");
+            }
+        }
+
+        return !(userExists || emailExists);
+    }
+
+    private static Document getEntry(String field, String query) {
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
         mongoLogger.setLevel(Level.SEVERE);
 
@@ -62,10 +99,34 @@ public class MongoDB {
             MongoCollection<Document> myCollection = testDB.getCollection("Test_Collection");
 
             // Save the required query in a "Document" object
-            Document user = myCollection.find(new Document("username", username)).first();
-            return user;
+            Document req = myCollection.find(new Document(field, query)).first();
+            return req;
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    private static boolean newEntry(String givenUser, String givenPass, String givenEmail) {
+        Logger mongoLogger = Logger.getLogger("org.mongodb.driver");
+        mongoLogger.setLevel(Level.SEVERE);
+
+        try (MongoClient mongoClient = MongoClients.create(CONNECT_URI)) {
+            // Make connection to the databse
+            MongoDatabase testDB = mongoClient.getDatabase("Test_DB");
+
+            // Get the required "collection"
+            MongoCollection<Document> myCollection = testDB.getCollection("Test_Collection");
+
+            // Create the new Document object
+            Document newUser = new Document("username", givenUser);
+            newUser.append("password", givenPass).append("email", givenEmail);
+
+            // Insert new user
+            myCollection.insertOne(newUser);
+
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }
