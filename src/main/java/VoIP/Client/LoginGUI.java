@@ -1,10 +1,13 @@
 package VoIP.Client;
 
+ /* Java swing GUI */
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.security.MessageDigest;
-
+import javax.swing.BorderFactory;
+import javax.swing.border.Border;
+/* Database and account verivication */
 import VoIP.Database.MongoDB;
 import VoIP.Misc.PrintOut;
 import java.util.Arrays;
@@ -12,15 +15,23 @@ import java.nio.charset.Charset;
 import java.nio.ByteBuffer;
 import java.nio.CharBuffer;
 import java.math.BigInteger;
+import java.util.regex.*;
+
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 
 public class LoginGUI extends JFrame {
 
     public LoginGUI() {
         initComponents();
+        defBorder = txfRegUsername.getBorder();
         listeners();
     }
 
-    public LoginGUI getGUI() {
+    private LoginGUI getGUI() {
         return this;
     }
 
@@ -33,7 +44,6 @@ public class LoginGUI extends JFrame {
 
         butRegister.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent evt) {
-                // TODO: Check if info is filled in correctly
                 register();
             }
         });
@@ -44,8 +54,34 @@ public class LoginGUI extends JFrame {
             }
         });
 
+        txfLogUsername.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                changeLogUsrnameBorder();
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                changeLogUsrnameBorder();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                changeLogUsrnameBorder();
+            }
+        });
+
         txfLogPassword.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) {
+                if (txfLogPassword.getPassword().length <= 4 || txfLogPassword.getPassword().length >= 20) {
+                    Border border = BorderFactory.createLineBorder(Color.RED, 1);
+                    txfLogPassword.setBorder(border);
+                    repaint();
+                    validLogPass = false;
+                } else {
+                    Border border = BorderFactory.createLineBorder(Color.GREEN, 1);
+                    txfLogPassword.setBorder(border);
+                    repaint();
+                    validLogPass = true;
+                }
                 loginKeyPressed(evt);
             }
         });
@@ -56,8 +92,34 @@ public class LoginGUI extends JFrame {
             }
         });
 
+        txfRegUsername.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                changeRegUsrnameBorder();
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                changeRegUsrnameBorder();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                changeRegUsrnameBorder();
+            }
+        });
+
         txfRegPassword.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) {
+                if (txfRegPassword.getPassword().length <= 4 || txfRegPassword.getPassword().length >= 20) {
+                    Border border = BorderFactory.createLineBorder(Color.RED, 1);
+                    txfRegPassword.setBorder(border);
+                    repaint();
+                    validRegPass = false;
+                } else {
+                    Border border = BorderFactory.createLineBorder(Color.GREEN, 1);
+                    txfRegPassword.setBorder(border);
+                    repaint();
+                    validRegPass = true;
+                }
                 registerKeyPressed(evt);
             }
         });
@@ -65,6 +127,21 @@ public class LoginGUI extends JFrame {
         txfRegEmail.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent evt) {
                 registerKeyPressed(evt);
+            }
+        });
+
+        txfRegEmail.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void changedUpdate(DocumentEvent e){
+                changeRegEmailBorder();
+            }
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                changeRegEmailBorder();
+            }
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                changeRegEmailBorder();
             }
         });
 
@@ -77,62 +154,119 @@ public class LoginGUI extends JFrame {
 
     private void logIn() {
         String givenUsername = txfLogUsername.getText();
+        byte[] passBytes = toBytes(txfLogPassword.getPassword());
+        String encryptedPass = encodeBytes(passBytes);
+        Arrays.fill(passBytes, (byte) 0); // clear sensitive data
 
-        if (!givenUsername.trim().equals("") && txfLogPassword.getPassword().length != 0) {
-            byte[] passBytes = toBytes(txfLogPassword.getPassword());
-            String encryptedPass = encodeBytes(passBytes);
-            Arrays.fill(passBytes, (byte) 0); // clear sensitive data
-
-            if (MongoDB.checkLoginCred(givenUsername.trim(), encryptedPass)) {
-                try {
-                    UIManager.setLookAndFeel(
-                    UIManager.getSystemLookAndFeelClassName());
-                } catch (UnsupportedLookAndFeelException e) {
-                    System.out.println("System look and feel unsupported.\n" + e);
-                } catch (ClassNotFoundException e) {
-                    System.out.println("System look and feel class could not be found.\n" + e);
-                } catch (InstantiationException e) {
-                    System.out.println("System look and feel could not be initialized.\n" + e);
-                } catch (IllegalAccessException e) {
-                    System.out.println("Illegal Access Exception.\n" + e);
-                }
-
-                new ChatGUI();
-                getGUI().dispose();
-
-            } else {
-                labLogError.setText("Incorrect Username or Password!");
-                repaint();
+        if (!(validLogPass && validLogUser)) {
+            labLogError.setText("Please check your details!");
+            repaint();
+        } else if (MongoDB.checkLoginCred(givenUsername.trim(), encryptedPass)) {
+            try {
+                UIManager.setLookAndFeel(
+                UIManager.getSystemLookAndFeelClassName());
+            } catch (UnsupportedLookAndFeelException e) {
+                System.out.println("System look and feel unsupported.\n" + e);
+            } catch (ClassNotFoundException e) {
+                System.out.println("System look and feel class could not be found.\n" + e);
+            } catch (InstantiationException e) {
+                System.out.println("System look and feel could not be initialized.\n" + e);
+            } catch (IllegalAccessException e) {
+                System.out.println("Illegal Access Exception.\n" + e);
             }
+
+            new ChatGUI();
+            getGUI().dispose();
         } else {
-            labLogError.setText("Empty username or password!");
+            labLogError.setText("Incorrect Username or Password!");
             repaint();
         }
+
     }
 
     private void register() {
         String givenUsername = txfRegUsername.getText();
         String givenEmail = txfRegEmail.getText();
 
-        if (!givenUsername.trim().equals("") && txfRegPassword.getPassword().length != 0) {
+        if (!(validRegPass && validRegUser && validRegEmail)) {
+            labRegError.setText("Please check your details!");
+            repaint();
+        } else {
             byte[] passBytes = toBytes(txfRegPassword.getPassword());
             String encryptedPass = encodeBytes(passBytes);
             Arrays.fill(passBytes, (byte) 0); // clear sensitive data
 
             if (MongoDB.registerUser(givenUsername.trim(), encryptedPass, givenEmail)) {
                 txfRegUsername.setText("");
+                txfRegUsername.setBorder(defBorder);
                 txfRegPassword.setText("");
+                txfRegPassword.setBorder(defBorder);
                 txfRegEmail.setText("");
+                txfRegEmail.setBorder(defBorder);
                 repaint();
             }
-        } else {
-            labRegError.setText("Empty username or password!");
-            repaint();
         }
     }
 
     private void forgotPassword() {
         JOptionPane.showMessageDialog(this, "LOL! RIP bro");
+    }
+
+    private boolean checkEmail(String email) {
+        String regex = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
+    }
+
+    private boolean checkUsername(String username) {
+        String regex = "^[a-zA-Z0-9]([._-](?![._-])|[a-zA-Z0-9]){3,18}[a-zA-Z0-9]$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(username);
+        return matcher.matches();
+    }
+    /* TODO: Need better name... */
+    private void changeRegEmailBorder() {
+        if (!checkEmail(txfRegEmail.getText())) {
+            Border border = BorderFactory.createLineBorder(Color.RED, 1);
+            txfRegEmail.setBorder(border);
+            repaint();
+            validRegEmail = false;
+        } else {
+            Border border = BorderFactory.createLineBorder(Color.GREEN, 1);
+            txfRegEmail.setBorder(border);
+            repaint();
+            validRegEmail = true;
+        }
+    }
+
+    /* TODO: Need better name... */
+    private void changeRegUsrnameBorder() {
+        if (!checkUsername(txfRegUsername.getText())) {
+            Border border = BorderFactory.createLineBorder(Color.RED, 1);
+            txfRegUsername.setBorder(border);
+            repaint();
+            validRegUser = false;
+        } else {
+            Border border = BorderFactory.createLineBorder(Color.GREEN, 1);
+            txfRegUsername.setBorder(border);
+            repaint();
+            validRegUser = true;
+        }
+    }
+
+    private void changeLogUsrnameBorder() {
+        if (!checkUsername(txfLogUsername.getText())) {
+            Border border = BorderFactory.createLineBorder(Color.RED, 1);
+            txfLogUsername.setBorder(border);
+            repaint();
+            validLogUser = false;
+        } else {
+            Border border = BorderFactory.createLineBorder(Color.GREEN, 1);
+            txfLogUsername.setBorder(border);
+            repaint();
+            validLogUser = true;
+        }
     }
 
     private void loginKeyPressed(KeyEvent evt) {
@@ -394,4 +528,11 @@ public class LoginGUI extends JFrame {
     private JPasswordField txfRegPassword;
     private JTextField txfRegEmail;
     private JTabbedPane tabMain;
+    private boolean validRegUser;
+    private boolean validRegPass;
+    private boolean validRegEmail;
+    private boolean validLogUser;
+    private boolean validLogPass;
+    private Border defBorder;
+
 }
