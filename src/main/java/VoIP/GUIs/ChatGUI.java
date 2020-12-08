@@ -1,4 +1,4 @@
-package VoIP.Client;
+package VoIP.GUIs;
 
 import java.awt.*;
 import java.awt.event.*;

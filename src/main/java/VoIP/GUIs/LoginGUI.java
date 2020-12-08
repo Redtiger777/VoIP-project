@@ -1,4 +1,4 @@
-package VoIP.Client;
+package VoIP.GUIs;
 
  /* Java swing GUI */
 import javax.swing.*;

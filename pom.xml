@@ -13,7 +13,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <mongodb-driver-sync.version>4.1.1</mongodb-driver-sync.version>
-        <exec.mainClass>VoIP.Main</exec.mainClass>
+        <exec.mainClass>VoIP.Client</exec.mainClass>
     </properties>
 
     <dependencies>

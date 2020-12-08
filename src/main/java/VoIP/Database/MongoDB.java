@@ -17,8 +17,7 @@ import javax.swing.JOptionPane;
 
 public class MongoDB {
     // NOTE: Never Commit with a visible uri!!!!
-        private static final String CONNECT_URI =
-    "";
+    private static final String CONNECT_URI = "";
 
     public static void main(String[] args) {
         Logger mongoLogger = Logger.getLogger("org.mongodb.driver");

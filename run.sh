@@ -1,8 +1,9 @@
 cd src/main/java/
-javac VoIP/Main.java
-java VoIP.Main
+javac VoIP/Client.java
+java VoIP.Client
 cd VoIP
 rm *.class
-rm Client/*.class
-rm Server/*.class
+rm GUI/*.class
+rm Misc/*.class
+rm Database/*.class
 cd ../../../..
